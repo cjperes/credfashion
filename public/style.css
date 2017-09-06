@@ -161,11 +161,18 @@ h3 {
 }
 
 .display-line .statement,
+.display-line .hint,
+.display-line .total-value {
+  font-weight: bold;
+  font-family: 'Montserrat SemiBold', sans-serif;
+}
+
+.display-line .statement,
 .display-line .hint {
-  font-size: 1.5rem;
+  font-size: 1.2rem;
 }
 .display-line .total-value {
-  font-size: 2rem;
+  font-size: 1.4rem;
 }
 
 .display-img {
@@ -281,4 +288,18 @@ input:focus {
   .welcome-img {
     display: none;
   }
+}
+
+.input-error{
+  color: #F22613;
+  font-size: .9rem;
+  margin: .3rem 0;
+  transition: all .2s;
+}
+.is-error{
+  border: 1px solid #F22613
+}
+
+.is-hidden{
+  opacity: 0;
 }
