@@ -3,7 +3,8 @@
   "rules": {
     "semi": "off",
     "class-methods-use-this": "off",
-    "func-names": "off"
+    "func-names": "off",
+    "no-underscore-dangle": "off"
   },
   "env": {
     "browser": true
