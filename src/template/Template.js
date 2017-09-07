@@ -13,12 +13,13 @@ class Template {
 
   static normalTemplate() {
     return `
-    <form onsubmit="cancelSubmit(e)">
-        <div class="display-img"> <img src="img/credfashion.png"> </div>
-        <h1 class="welcome-msg">Digite o seu CPF para realizar a consulta</h1>
-        <input type="text" placeholder="" class="js-input-cpf" pattern="\\d{3}.\\d{3}.\\d{3}-\\d{2}">
-        <button class="button" type="submit">Consultar</button>
+    <form class="js-form-consult" onsubmit="cancelSubmit(e)">
+      <div class="display-img"> <img src="img/credfashion.png"> </div>
+      <h1 class="welcome-msg">Digite o seu CPF para realizar a consulta</h1>
+      <input type="text" placeholder="" class="js-input-cpf">
+      <span class="input-error is-hidden">CPF inválido</span>
     </form>
+    <button class="button">Consultar</button>
         `
   }
 }
