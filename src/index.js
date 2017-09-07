@@ -1,6 +1,6 @@
 /* Requires */
 const VMasker = require('vanilla-masker')
-const Template = require('./js/Template')
+const Template = require('./template/Template')
 
 /* Elements */
 const $displayBgElement = document.querySelector('.display-bg')
