@@ -1,46 +1,81 @@
 /* Requires */
 const VMasker = require('vanilla-masker')
 const Template = require('./js/Template')
-// const Customer = require('./model/Customer')
-const CardFactory = require('./CardFactory')
 
 /* Elements */
-const $cpfInputElement = document.querySelector('.js-input-cpf')
+const $displayBgElement = document.querySelector('.display-bg')
 const $displayLineElement = document.querySelector('.display-line')
-const $errorSpan = document.querySelector('.input-error')
+let $errorSpan = document.querySelector('.input-error')
+let $cpfInputElement = document.querySelector('.js-input-cpf')
 
 /* Functions */
+const handleClassList = {
+  remove: (element, className) => {
+    element.classList.remove(className)
+  },
+  add: (element, className) => {
+    element.classList.add(className)
+  },
+}
+
 /* eslint-disable */
 const cancelSubmit = event => event.preventDefault()
 /* eslint-enable */
-const isValidInput = () => {
-  const cpf = $cpfInputElement.value
+
+const assignInitialElements = () => {
+  $cpfInputElement = document.querySelector('.js-input-cpf')
+  $errorSpan = document.querySelector('.input-error')
+  VMasker($cpfInputElement).maskPattern('999.999.999-99')
+}
+
+const isValidInput = (cpf) => {
   const cpfRegex = /\d{3}.\d{3}.\d{3}-\d{2}/gi
   return cpfRegex.test(cpf)
 }
+
 const handleErrorStatement = () => {
-  $errorSpan.classList.remove('is-hidden')
-  $cpfInputElement.classList.add('is-error')
+  handleClassList.remove($errorSpan, 'is-hidden')
+  handleClassList.add($cpfInputElement, 'is-error')
 }
 
-/* Events and behaviour */
-VMasker($cpfInputElement).maskPattern('999.999.999-99')
-$displayLineElement.addEventListener('click', function (event) {
-  const isButton = event.target.classList.contains('button')
+const handleFade = (element, shouldBeVisible) => {
+  if (shouldBeVisible) {
+    handleClassList.remove(element, 'fadeOut')
+    handleClassList.add(element, 'fadeIn')
+  } else {
+    handleClassList.remove(element, 'fadeIn')
+    handleClassList.add(element, 'fadeOut')
+  }
+}
 
+const checkLoyaltyPoints = function (event) {
+  const isButton = event.target.classList.contains('button')
   if (isButton) {
     const isNewQuery = event.target.classList.contains('js-new-query')
 
     if (isNewQuery) {
+      handleFade($displayBgElement, false)
       this.innerHTML = Template.normalTemplate()
+      assignInitialElements()
+      handleFade($displayBgElement, true)
       return
     }
-    if (isValidInput()) {
-      this.innerHTML = Template.successTemplate({ name: 'Raul', total: 100 })
+
+    const cpf = $cpfInputElement.value
+
+    if (isValidInput(cpf)) {
+      handleFade($displayBgElement, false)
+      this.innerHTML = Template.successTemplate({
+        name: 'Raul',
+        total: 100,
+      })
+      handleFade($displayBgElement, true)
     } else {
       handleErrorStatement()
     }
   }
-})
+}
 
-CardFactory.queryPoints('').then(res => console.log(res))
+/* Events and behaviour */
+$displayLineElement.addEventListener('click', checkLoyaltyPoints)
+assignInitialElements()
