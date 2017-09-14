@@ -1,6 +1,7 @@
 /* Requires */
 const VMasker = require('vanilla-masker')
 const Template = require('./template/Template')
+const { getUserPoints } = require('./services/cardHttp')
 
 /* Elements */
 const $displayBgElement = document.querySelector('.display-bg')
@@ -48,7 +49,7 @@ const handleFade = (element, shouldBeVisible) => {
   }
 }
 
-const checkLoyaltyPoints = function (event) {
+const checkLoyaltyPoints = async function (event) {
   const isButton = event.target.classList.contains('button')
   if (isButton) {
     const isNewQuery = event.target.classList.contains('js-new-query')
@@ -64,12 +65,18 @@ const checkLoyaltyPoints = function (event) {
     const cpf = $cpfInputElement.value
 
     if (isValidInput(cpf)) {
-      handleFade($displayBgElement, false)
-      this.innerHTML = Template.successTemplate({
-        name: 'Raul',
-        total: 100,
-      })
-      handleFade($displayBgElement, true)
+      const response = await getUserPoints(cpf)
+
+      if (response.data.sts === true && response.data.data) {
+        handleFade($displayBgElement, false)
+        this.innerHTML = Template.successTemplate({
+          name: response.data.data[0].NOME,
+          total: response.data.data[0].FIDELIDADE,
+        })
+        handleFade($displayBgElement, true)
+      } else {
+        handleErrorStatement()
+      }
     } else {
       handleErrorStatement()
     }
