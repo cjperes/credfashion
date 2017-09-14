@@ -1,11 +1,14 @@
 {
-  "name": "",
-  "version": "",
+  "name": "credfashion-app",
+  "version": "0.0.1",
+  "description": "Aplicação para consulta de saldo dos clientes Credfashion",
   "scripts": {
-    "dev": "yarn lite-server public/",
-    "compile": "./node_modules/.bin/browserify src/index.js -o public/bundle.js -t [ babelify --presets [ es2015 ] ]",
+    "dev": "./node_modules/.bin/lite-server public/",
+    "compile": "npm run lint && ./node_modules/.bin/browserify src/index.js -o public/bundle.js -t [ babelify --presets [ es2015 ] ] && npm run uglify",
     "compile:w": "./node_modules/.bin/watchify src/index.js -o public/bundle.js -t [ babelify --presets [ es2015 ] ]",
-    "deploy": "yarn compile && ./node_modules/.bin/surge -p ./public/ -d credfashion.surge.sh"
+    "deploy": "npm run compile && ./node_modules/.bin/surge -p ./public/ -d credfashion.surge.sh",
+    "lint": "./node_modules/.bin/eslint src/**/*.js",
+    "uglify":"./node_modules/.bin/uglifyjs public/bundle.js -o public/bundle.js"
   },
   "devDependencies": {
     "@types/jest": "^20.0.8",
